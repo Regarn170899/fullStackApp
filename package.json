@@ -12,5 +12,11 @@
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5"
+  },
+  "dependencies": {
+    "@nestjs/config": "^3.3.0",
+    "@nestjs/typeorm": "^10.0.2",
+    "axios": "^1.7.8",
+    "typeorm": "^0.3.20"
   }
 }
