@@ -4,5 +4,6 @@ export class UsersDto{
 
     description: string;
 
-    email: string;
+    executor: number;
+
 }

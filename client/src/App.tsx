@@ -1,21 +1,19 @@
-
-import './App.css'
-import  axios from 'axios';
+import './App.css';
+import TaskBoard from "./components/TaskBoard/TaskBoard";
+import {useEffect} from "react";
+import {useAppDispatch} from "./hooks/storeHooks";
+import {getTasks} from "./components/Task/taskSlice";
 
 function App() {
-    const getAllUsers=async ()=>{
-    try {
-      const response =await  axios.get('http://localhost:5000/users')
-      console.log(response);
-    }catch (e) {
-      console.log(e);
-    }
-    }
+const dispatch=useAppDispatch()
 
+useEffect(()=>{
+    dispatch(getTasks())
+},[])
   return (
     <>
       <div>
-          <button onClick={()=>getAllUsers()}>test</button>
+          <TaskBoard />
       </div>
     </>
   )
