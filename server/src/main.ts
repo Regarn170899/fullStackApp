@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import {ValidationPipe} from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -8,7 +9,13 @@ async function bootstrap() {
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Authorization, X-Custom-Header',
     credentials: true,
-  });
+  });/*
+  app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true, // Включить автоматическое преобразование данных
+        whitelist: true, // Удаляет поля, не указанные в DTO
+      }),
+  );*/
   await app.listen(process.env.PORT ?? 3000);
 
 }

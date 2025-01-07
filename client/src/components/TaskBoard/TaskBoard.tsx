@@ -1,37 +1,31 @@
 import React, { useState } from "react";
 import styles from './TaskBoard.module.css'
+import {ITask, selectTasks, updateTasks} from "../Task/taskSlice";
+import {useAppDispatch, useAppSelector} from "../../hooks/storeHooks";
 
-interface Item {
-    id: number;
-    text: string;
-    status: string;
-}
+
 
 const TaskBoard: React.FC = () => {
+const dispatch=useAppDispatch()
+    const tasks=useAppSelector(selectTasks)
+    console.log(tasks);
 
-    const [sourceItems, setSourceItems] = useState<Item[]>([
-        { id: 1, text: "Элемент 1",status:'Источник' },
-        { id: 2, text: "Элемент 2",status:'Источник' },
-        { id: 3, text: "Элемент 3",status:'Источник' },
-    ]);
+    const [draggedItem, setDraggedItem] = useState<ITask | null>(null);
 
-
-    const [draggedItem, setDraggedItem] = useState<Item | null>(null);
-
-    const onDragStart = (item: Item) => {
+    const onDragStart = (item: ITask) => {
         setDraggedItem(item);
     };
 
     const onDrop = (status:string) => {
         if (draggedItem) {
-            const actualSourceItems=sourceItems.map((item:Item)=>{
+            const actualSourceItems=tasks.map((item:ITask)=>{
                 if(item.id===draggedItem.id){
                     return {...item,status:status
                     }
                 }
                 return item
             })
-            setSourceItems(actualSourceItems)
+            dispatch(updateTasks(actualSourceItems))
             setDraggedItem(null);
         }
     };
@@ -48,14 +42,15 @@ const TaskBoard: React.FC = () => {
                 onDrop={()=>onDrop('Источник')}
             >
                 <h3>Источник</h3>
-                {sourceItems.filter(item=>item.status==='Источник').map((item) => (
+                {tasks.filter(item=>item.status==='Источник').map((item) => (
                     <div
                         key={item.id}
                         draggable
                         onDragStart={() => onDragStart(item)}
                         className={styles.item}
                     >
-                        {item.text}
+                        <p>{item.name}</p>
+                        <p>{item.description}</p>
                     </div>
                 ))}
             </div>
@@ -67,14 +62,15 @@ const TaskBoard: React.FC = () => {
                 onDrop={()=>onDrop('Цель')}
             >
                 <h3>Цель</h3>
-                {sourceItems.filter(item=>item.status==='Цель').map((item) => (
+                {tasks.filter(item=>item.status==='Цель').map((item) => (
                     <div
                         key={item.id}
                         draggable
                         onDragStart={() => onDragStart(item)}
                        className={styles.item}
                     >
-                        {item.text}
+                        <p>{item.name}</p>
+                        <p>{item.description}</p>
                     </div>
                 ))}
             </div>

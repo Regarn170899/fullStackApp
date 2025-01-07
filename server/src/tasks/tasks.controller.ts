@@ -1,6 +1,7 @@
-import {Body, Controller, Get, HttpCode, Post} from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, Patch, Post} from '@nestjs/common';
 import {TasksService} from "./tasks.service";
-import {TasksDto} from "./tasks.dto";
+import {TasksDto, TasksEditDto} from "./tasks.dto";
+
 
 @Controller('tasks')
 export class TasksController {
@@ -12,8 +13,14 @@ export class TasksController {
         return this.taskService.createTask(TaskDto)
     }
 
+
     @Get()
     async getAllTask(){
         return this.taskService.getAllTasks()
     }
+    @Patch()
+    async editTask(@Body() TaskDto:TasksEditDto){
+        return this.taskService.editTask(TaskDto)
+    }
+
 }

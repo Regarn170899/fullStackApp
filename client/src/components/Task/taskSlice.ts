@@ -18,7 +18,7 @@ export interface ITaskRequestBody {
 
     executorId: number;
 }
-interface ITask {
+export interface ITask {
     id: number,
     name: string,
     description: string,
@@ -47,6 +47,9 @@ export const taskSlice = createSlice({
     name: 'task',
     initialState,
     reducers: {
+        updateTasks:(state,action)=>{
+            state.tasks=action.payload
+        }
 
     },
     extraReducers: (builder) => {
@@ -56,7 +59,10 @@ export const taskSlice = createSlice({
     },
 })
 
-export const {  } = taskSlice.actions
-export const tasks=(state: RootState) => state.task.tasks
+export const { updateTasks } = taskSlice.actions
+
+
+
+export const selectTasks=(state: RootState) => state.task.tasks
 
 export default taskSlice.reducer

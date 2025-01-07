@@ -4,7 +4,9 @@ import {UsersEntity} from "../users/users.entity";
 
 @Entity()
 export class TasksEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('identity', {
+        generatedIdentity: 'ALWAYS'
+    })
     id: number;
 
     @Column({ length: 500 })
