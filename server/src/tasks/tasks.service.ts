@@ -4,6 +4,7 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {TasksEntity} from "./tasks.entity";
 import {UsersEntity} from "../users/users.entity";
 import {TasksDto, TasksEditDto} from "./tasks.dto";
+import {updateProperties} from "../utils";
 
 @Injectable()
 export class TasksService {
@@ -29,11 +30,14 @@ export class TasksService {
         return  this.taskRepository.save(task)
     }
     async editTask (dto:TasksEditDto):Promise<TasksEntity>{
-        const task =await this.taskRepository.findOneBy({id:dto.id})
+        let task = await this.taskRepository.findOne({
+            where: { id: dto.id },
+            relations: ['executor'],
+        });
         if (!task) {
             throw new Error(`Задача не наедена`);
         }
-        Object.assign(task, dto);
+        task=updateProperties(task, dto);
         return  this.taskRepository.save(task);
 
     }
