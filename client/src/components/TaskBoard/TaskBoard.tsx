@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import styles from './TaskBoard.module.css'
-import {patchEditTask, selectTasks,} from "../Task/taskSlice";
+import {patchEditTask, selectStatuses, selectTasks,} from "../Task/taskSlice";
 import {useAppDispatch, useAppSelector} from "../../hooks/storeHooks";
 import {ITask} from "../Task/types";
+import Task from "../Task/Task";
 
 
 
 const TaskBoard: React.FC = () => {
 const dispatch=useAppDispatch()
     const tasks=useAppSelector(selectTasks)
+    const statuses=useAppSelector(selectStatuses)
 
     const [draggedItem, setDraggedItem] = useState<ITask | null>(null);
 
@@ -16,13 +18,13 @@ const dispatch=useAppDispatch()
         setDraggedItem(item);
     };
 
-    const onDrop = (status:string) => {
+    const onDrop = (statusId:number) => {
         if (draggedItem) {
           const task={
               id:draggedItem.id,
               name:draggedItem.name,
               description:draggedItem.description,
-              status:status,
+              statusId:statusId,
               executorId:draggedItem.executor.id
           }
           dispatch(patchEditTask(task))
@@ -35,44 +37,18 @@ const dispatch=useAppDispatch()
 
     return (
         <div style={{ display: "flex", gap: "20px", padding: "20px" }}>
-            <div
-                className={styles.container}
-                onDragOver={onDragOver}
-                onDrop={()=>onDrop('Источник')}
-            >
-                <h3>Источник</h3>
-                {tasks.filter(item=>item.status==='Источник').map((item) => (
-                    <div
-                        key={item.id}
-                        draggable
-                        onDragStart={() => onDragStart(item)}
-                        className={styles.item}
-                    >
-                        <p>{item.name}</p>
-                        <p>{item.description}</p>
-                    </div>
-                ))}
-            </div>
-
-            {/* Цель */}
-            <div
-                className={styles.container}
-                onDragOver={onDragOver}
-                onDrop={()=>onDrop('Цель')}
-            >
-                <h3>Цель</h3>
-                {tasks.filter(item=>item.status==='Цель').map((item) => (
-                    <div
-                        key={item.id}
-                        draggable
-                        onDragStart={() => onDragStart(item)}
-                       className={styles.item}
-                    >
-                        <p>{item.name}</p>
-                        <p>{item.description}</p>
-                    </div>
-                ))}
-            </div>
+            {statuses.map((status)=>(
+                <div
+                    className={styles.container}
+                    onDragOver={onDragOver}
+                    onDrop={()=>onDrop(status.id)}
+                >
+                    <h3>{status.name}</h3>
+                    {tasks.filter(item=>item.status.name===status.name).map((item) => (
+                        <Task task={item} onDragStart={onDragStart}/>
+                    ))}
+                </div>
+            ))}
         </div>
     );
 };

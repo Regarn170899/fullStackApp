@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import * as process from "process";
 import {UsersEntity} from "../users/users.entity";
 import {TasksEntity} from "../tasks/tasks.entity";
+import {StatusTaskEntity} from "../status-task/status-task.entity";
 
 export const databaseProviders = [
     {
@@ -16,7 +17,7 @@ export const databaseProviders = [
                 password: process.env.POSTGRES_PASSWORD,
                 database:process.env.POSTGRES_DB,
                 entities: [
-                    UsersEntity,TasksEntity
+                    UsersEntity,TasksEntity,StatusTaskEntity
                 ],
                 synchronize: true,
             });

@@ -10,3 +10,6 @@ export const createTask = async (body:ITaskCreateRequestBody) => {
 export const editTask = async (body:ITaskEditRequestBody) => {
     return await instanceApi.patch('tasks', body)
 }
+export const getAllStatuses = async ()=>{
+    return await instanceApi.get('status-task',{})
+}

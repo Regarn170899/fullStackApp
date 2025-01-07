@@ -4,7 +4,7 @@ export class TasksDto{
     name: string;
 
     description: string;
-    status:string
+    statusId:number;
 
     executorId: number;
 }
