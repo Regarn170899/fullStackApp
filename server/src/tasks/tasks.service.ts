@@ -17,28 +17,31 @@ export class TasksService {
     ) {}
 
 
-    async createTask(dto:TasksDto):Promise<TasksEntity>{
-        const user =await this.userRepository.findOneBy({id:dto.executorId})
-        if(!user){
-            throw new Error('Пользовательне наеден')
+    async createTask(dto: TasksDto): Promise<TasksEntity> {
+        const user = await this.userRepository.findOneBy({ id: dto.executorId });
+        if (user) {
+            const task = this.taskRepository.create({
+                ...dto,
+                executor: user
+            });
+            return this.taskRepository.save(task);
         }
-        const task=this.taskRepository.create({
-            ...dto,
-            executor:user
-        })
-        return  this.taskRepository.save(task)
+        throw new Error('Пользователь не найден');
     }
-    async editTask (dto:TasksEditDto):Promise<TasksEntity>{
-        const task =await this.taskRepository.findOneBy({id:dto.id})
-        if (!task) {
-            throw new Error(`Задача не наедена`);
-        }
-        Object.assign(task, dto);
-        return  this.taskRepository.save(task);
 
+    async editTask(dto: TasksEditDto): Promise<TasksEntity> {
+        const task = await this.taskRepository.findOneBy({ id: dto.id });
+        if (task) {
+            Object.assign(task, dto);
+            return this.taskRepository.save(task);
+        }
+        throw new Error('Задача не найдена');
     }
     async getAllTasks():Promise<TasksEntity[]>{
-        return this.taskRepository.find({relations: ['executor'],})
+        return this.taskRepository.find({
+            relations: ['executor'],
+            order: { status: 'ASC', order: 'ASC' }
+        })
     }
 }
 
