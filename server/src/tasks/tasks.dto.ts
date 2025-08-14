@@ -6,15 +6,25 @@ export class TasksDto{
     description: string;
     status:string
 
+    @IsOptional()
+    order?: number
+
     executorId: number;
 }
 
 export class TasksEditDto{
     id:number
-    name: string;
+    @IsOptional()
+    name?: string;
 
-    description: string;
-    status:string
+    @IsOptional()
+    description?: string;
+    @IsOptional()
+    status?:string
 
-    executorId: number;
+    @IsOptional()
+    order?: number
+
+    @IsOptional()
+    executorId?: number;
 }

@@ -16,6 +16,8 @@ export interface ITaskRequestBody {
     description: string;
     status:string
 
+    order?: number;
+
     executorId: number;
 }
 export interface ITask {
@@ -23,6 +25,7 @@ export interface ITask {
     name: string,
     description: string,
     status: string,
+    order: number,
     executor: {
         id: number,
         name: string,

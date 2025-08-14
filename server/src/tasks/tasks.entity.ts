@@ -17,6 +17,9 @@ export class TasksEntity {
     @Column('text',{ nullable: false })
     status: string;
 
+    @Column({ type: 'int', name: 'task_order', default: 0 })
+    order: number;
+
     @ManyToOne(() => UsersEntity, (user) => user.tasks, { nullable: false })
     executor: UsersEntity;
 
